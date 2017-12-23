@@ -1,4 +1,4 @@
-package com.martinerlic.workdaymuseumdisplay.activity;
+package com.martinerlic.parserestlocalstorage.activity;
 
 /**
  * Created by mnxe (martin erlic) on 8/14/2017.
@@ -13,10 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.martinerlic.workdaymuseumdisplay.R;
-import com.martinerlic.workdaymuseumdisplay.adapter.CardAdapter;
-import com.martinerlic.workdaymuseumdisplay.helper.DataHelper;
-import com.martinerlic.workdaymuseumdisplay.helper.SQLiteHelper;
+import com.martinerlic.parserestlocalstorage.R;
+import com.martinerlic.parserestlocalstorage.adapter.CardAdapter;
+import com.martinerlic.parserestlocalstorage.helper.DataHelper;
+import com.martinerlic.parserestlocalstorage.helper.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mCardAdapter);
 
         /* Add data from local storage to RecyclerView adapter */
-        mCardAdapter.addData(db.getAllMediaImages());
-        Log.d(getClass().toString(), "Retrieved from local database: " + db.getAllMediaImages());
+        mCardAdapter.addData(db.getAllPosts());
+        Log.d(getClass().toString(), "Retrieved from local database: " + db.getAllPosts());
 
         /* Define SwipeRefreshLayout */
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);

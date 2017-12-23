@@ -1,19 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.martinerlic.workdaymuseumdisplay">
+    package="com.martinerlic.parserestlocalstorage">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.martinerlic.parserestlocalstorage.application.GlobalApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <!-- Main Activity -->
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.martinerlic.parserestlocalstorage.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.martinerlic.workdaymuseumdisplay">
+    package="com.martinerlic.parserestlocalstorage">
 
     <application
         android:allowBackup="true"

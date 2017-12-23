@@ -1,4 +1,4 @@
-package com.martinerlic.workdaymuseumdisplay.service;
+package com.martinerlic.parserestlocalstorage.service;
 
 /**
  * Created by mnxe on 8/14/2017.
@@ -10,7 +10,8 @@ public class ServiceFactory {
 
     /**
      * Creates a retrofit service from an arbitrary class (clazz)
-     * @param clazz Java interface of the retrofit service
+     *
+     * @param clazz    Java interface of the retrofit service
      * @param endPoint REST endpoint url
      * @return retrofit service with defined endpoint
      */

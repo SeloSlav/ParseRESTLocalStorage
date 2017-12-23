@@ -1,4 +1,4 @@
-package com.martinerlic.workdaymuseumdisplay.adapter;
+package com.martinerlic.parserestlocalstorage.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,17 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.martinerlic.workdaymuseumdisplay.R;
-import com.martinerlic.workdaymuseumdisplay.model.MediaImage;
+import com.martinerlic.parserestlocalstorage.R;
+import com.martinerlic.parserestlocalstorage.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<MediaImage> mItems;
+    private List<Post> mItems;
     private Context mContext;
 
     public CardAdapter(Context applicationContext) {
@@ -25,7 +25,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         mContext = applicationContext;
     }
 
-    public void addData(List<MediaImage> mediaIds) {
+    public void addData(List<Post> mediaIds) {
         mItems.addAll(mediaIds);
         notifyDataSetChanged();
     }
@@ -44,7 +44,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        String mediaId = mItems.get(i).getTitle();
+        String mediaId = mItems.get(i).getText();
 
         // TODO: Assuming mediaIds are URLs, we could load them into each imageView with Picasso
         /*Picasso.with(mContext)
@@ -64,14 +64,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        // TextView textView;
-        ImageView imageView;
+        TextView textView;
+        // ImageView imageView;
 
         ViewHolder(View itemView) {
             super(itemView);
 
-            // textView = itemView.findViewById(R.id.textView);
-            imageView = itemView.findViewById(R.id.imageView);
+            textView = itemView.findViewById(R.id.textView);
+            // imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

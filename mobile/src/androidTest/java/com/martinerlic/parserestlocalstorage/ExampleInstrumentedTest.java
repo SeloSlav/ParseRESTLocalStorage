@@ -1,4 +1,4 @@
-package com.martinerlic.workdaymuseumdisplay;
+package com.martinerlic.parserestlocalstorage;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

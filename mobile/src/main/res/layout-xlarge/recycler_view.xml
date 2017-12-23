@@ -15,20 +15,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorAccent"
-                android:contentDescription="@string/caustic_media_file" />
+                android:background="@color/colorAccent" />-->
 
-            <!--<TextView
+            <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView"
-                android:textColor="@color/colorAccent" />-->
+                android:textColor="@color/colorAccent" />
 
         </RelativeLayout>
 

@@ -1,4 +1,4 @@
-package com.martinerlic.workdaymuseumdisplay.helper;
+package com.martinerlic.parserestlocalstorage.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.martinerlic.workdaymuseumdisplay.model.MediaImage;
+import com.martinerlic.parserestlocalstorage.model.Post;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -60,14 +60,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     /* ----- Initial CRUD Operations ----- */
 
     /* Add new media file to local storage */
-    public void addMediaImage(MediaImage mediaImage) {
+    public void addPost(Post post) {
 
-        Log.d("addMediaImage", mediaImage.getTitle());
+        Log.d("addPost", post.getText());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, mediaImage.getTitle()); // Get title
+        values.put(KEY_TITLE, post.getText()); // Get text
 
         db.insert(TABLE_MEDIAIMAGES,
                 null,
@@ -77,29 +77,29 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     /* Retrieve list of media files from local storage */
-    public List<MediaImage> getAllMediaImages() {
-        List<MediaImage> mediaImages = new LinkedList<>();
+    public List<Post> getAllPosts() {
+        List<Post> posts = new LinkedList<>();
 
         String query = "SELECT  * FROM " + TABLE_MEDIAIMAGES;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        MediaImage mediaImage;
+        Post post;
         if (cursor.moveToFirst()) {
             do {
-                mediaImage = new MediaImage();
-                mediaImage.setId(Integer.parseInt(cursor.getString(0)));
+                post = new Post();
+                post.set_id(Integer.parseInt(cursor.getString(0)));
 
-                // Add mediaImage to mediaImages
-                mediaImages.add(mediaImage);
+                // Add post to posts
+                posts.add(post);
             } while (cursor.moveToNext());
         }
 
-        Log.d("getAllMediaImages()", mediaImages.toString());
+        Log.d("getAllPosts()", posts.toString());
 
-        // return media images
-        return mediaImages;
+        // return posts
+        return posts;
     }
 
 }

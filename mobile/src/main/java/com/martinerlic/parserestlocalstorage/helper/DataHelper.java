@@ -1,14 +1,14 @@
-package com.martinerlic.workdaymuseumdisplay.helper;
+package com.martinerlic.parserestlocalstorage.helper;
 
 import android.util.Log;
 import android.widget.Toast;
 
-import com.martinerlic.workdaymuseumdisplay.activity.MainActivity;
-import com.martinerlic.workdaymuseumdisplay.adapter.CardAdapter;
-import com.martinerlic.workdaymuseumdisplay.model.MediaImage;
-import com.martinerlic.workdaymuseumdisplay.model.MediaResponse;
-import com.martinerlic.workdaymuseumdisplay.service.CausticRetrofitService;
-import com.martinerlic.workdaymuseumdisplay.service.ServiceFactory;
+import com.martinerlic.parserestlocalstorage.activity.MainActivity;
+import com.martinerlic.parserestlocalstorage.adapter.CardAdapter;
+import com.martinerlic.parserestlocalstorage.model.Post;
+import com.martinerlic.parserestlocalstorage.model.PostResponse;
+import com.martinerlic.parserestlocalstorage.service.ParseRetrofitService;
+import com.martinerlic.parserestlocalstorage.service.ServiceFactory;
 
 import java.util.List;
 
@@ -24,16 +24,16 @@ public class DataHelper {
     }
 
     public void retrieveData(final CardAdapter mCardAdapter, SQLiteHelper db) {
-        CausticRetrofitService service = ServiceFactory.createRetrofitService(CausticRetrofitService.class, CausticRetrofitService.SERVICE_ENDPOINT);
-        service.getMedia()
+        ParseRetrofitService service = ServiceFactory.createRetrofitService(ParseRetrofitService.class, ParseRetrofitService.SERVICE_ENDPOINT);
+        service.getPosts()
                 .doOnNext(data -> cacheData(data, db, mCardAdapter))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<MediaResponse>() {
+                .subscribe(new Subscriber<PostResponse>() {
                     @Override
                     public final void onCompleted() {
 
-                        Log.e("CausticRetrofitService", "Caustic Request Completed!");
+                        Log.e("ParseRetrofitService", "Caustic Request Completed!");
 
                         /* Cancel all progress indicators after data retrieval complete */
                         mainActivity.setRefreshingFalse();
@@ -41,7 +41,7 @@ public class DataHelper {
                         Toast.makeText(mainActivity.getApplicationContext(), "Download complete.", Toast.LENGTH_SHORT).show();
 
                         // TODO: Add media to local data store and then display them one-by-one in real-time
-                        mCardAdapter.addData(db.getAllMediaImages()); // Add all media images to card views
+                        mCardAdapter.addData(db.getAllPosts()); // Add all media images to card views
                         mCardAdapter.notifyDataSetChanged();
                     }
 
@@ -51,19 +51,19 @@ public class DataHelper {
                         mainActivity.setRefreshingFalse();
 
                         Toast.makeText(mainActivity.getApplicationContext(), "Cannot retrieve data. Please try again later.", Toast.LENGTH_SHORT).show();
-                        Log.e("CausticRetrofitService", e.getMessage());
+                        Log.e("ParseRetrofitService", e.getMessage());
                     }
 
                     @Override
-                    public final void onNext(MediaResponse mediaResponse) {
-                        if (mediaResponse != null) {
+                    public final void onNext(PostResponse postResponse) {
+                        if (postResponse != null) {
 
-                            mCardAdapter.addData(db.getAllMediaImages());
-                            Log.d(mainActivity.getClass().toString(), "Added to local database: " + db.getAllMediaImages());
+                            mCardAdapter.addData(db.getAllPosts());
+                            Log.d(mainActivity.getClass().toString(), "Added to local database: " + db.getAllPosts());
                             mCardAdapter.notifyDataSetChanged();
 
                         } else {
-                            Log.e("CausticRetrofitService", "Object returned is null.");
+                            Log.e("ParseRetrofitService", "Object returned is null.");
                         }
 
                     }
@@ -71,19 +71,19 @@ public class DataHelper {
                 });
     }
 
-    private void cacheData(MediaResponse mediaResponse, SQLiteHelper db, CardAdapter mCardAdapter) {
+    private void cacheData(PostResponse mediaResponse, SQLiteHelper db, CardAdapter mCardAdapter) {
         if (mediaResponse != null) {
 
-            Log.e("CausticRetrofitService", "Returned objects: " + mediaResponse.getResults());
+            Log.e("ParseRetrofitService", "Returned objects: " + mediaResponse.getResults());
 
-            for (String mediaId : mediaResponse.getResults()) {
-                Log.e("CausticRetrofitService", mediaId);
+            for (Post mediaId : mediaResponse.getResults()) {
+                Log.e("ParseRetrofitService", mediaId.getObjectId());
             }
 
-            List<String> mediaIds = mediaResponse.getResults();
-            Log.d(mainActivity.getClass().toString(), "All Media IDs: " + mediaIds);
+            List<Post> posts = mediaResponse.getResults();
+            Log.d(mainActivity.getClass().toString(), "All Media IDs: " + posts);
 
-            if (mediaIds.isEmpty()) {
+            if (posts.isEmpty()) {
                 Toast.makeText(mainActivity.getApplicationContext(), "Cannot retrieve data. Please try again later.", Toast.LENGTH_SHORT).show();
             }
 
@@ -91,18 +91,18 @@ public class DataHelper {
             mCardAdapter.notifyDataSetChanged();
 
             /* Store objects from remote web service to local database */
-            for (String mediaId : mediaIds) {
-                Log.d(mainActivity.getClass().toString(), "Media Id: " + mediaId);
+            for (Post post : posts) {
+                Log.d(mainActivity.getClass().toString(), "Post: " + post);
 
-                MediaImage newMediaImage = new MediaImage();
-                newMediaImage.setTitle(mediaId);
+                Post newMediaImage = new Post();
+                newMediaImage.setText(post.getText());
 
-                db.addMediaImage(newMediaImage); // Add media image to local database
+                db.addPost(post); // Add media image to local database
                 Log.d(mainActivity.getClass().toString(), "Added to local database: " + newMediaImage);
             }
 
         } else {
-            Log.e("CausticRetrofitService", "Object returned is null.");
+            Log.e("ParseRetrofitService", "Object returned is null.");
         }
 
     }
